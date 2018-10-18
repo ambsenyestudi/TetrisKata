@@ -29,7 +29,7 @@ namespace TetrisKata
         }
         public void CreateNewPiece()
         {
-            Board.AddPieceToBoard();
+            Board.AddRandomPieceToBoard();
         }
 
     }

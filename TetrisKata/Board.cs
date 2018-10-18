@@ -56,7 +56,7 @@ namespace TetrisKata
             }
             if (!isMovePossible)
             {
-                AddPieceToBoard();
+                AddRandomPieceToBoard();
             }
             
         }
@@ -67,7 +67,7 @@ namespace TetrisKata
             {
                 //Todo check collision against lines
                 var posX = piece.PositionXY[0];
-                var posY = piece.PositionXY[1];
+                var posY = piece.PositionXY[1] + interval;
                 var boundingX = piece.BoundingBox[0];
                 var boundingY = piece.BoundingBox[1];
 
@@ -81,7 +81,7 @@ namespace TetrisKata
                     while(count < boundingY && !isCollision)
                     {
                         var currLineIndex = posY + count;
-                        var currCollisionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingY);
+                        var currCollisionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingX);
                         //this line might have a collision block
                         if (currCollisionLine.Contains(true))
                         {
@@ -96,12 +96,12 @@ namespace TetrisKata
                         }
                         count++;
                     }
-                    return false;
+                    return isCollision;
                 }
                 else
                 {
                     //if blocks in collition map 
-                    return true;
+                    return false;
                 }
                 
             }
@@ -116,14 +116,19 @@ namespace TetrisKata
                 Pieces[Pieces.Count - 1].Stop();
             }
         }
-        public void AddPieceToBoard()
+        public void AddPieceToBoard(PieceBase piece)
+        {
+            Pieces.Add(piece);
+        }
+
+        public void AddRandomPieceToBoard()
         {
             /* 
              * At the beginning of the game a new piece will be created at the top center of the board. 
              * The shape of the piece will be random.
              */
             //Todo at the top center
-            Pieces.Add(GenerateRandomPiece());
+            AddPieceToBoard(GenerateRandomPiece());
         }
 
         private PieceBase GenerateRandomPiece()

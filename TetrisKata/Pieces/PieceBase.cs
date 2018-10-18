@@ -28,6 +28,7 @@ namespace TetrisKata.Pieces
         public PieceBase(PieceShape shape)
         {
             IsActive = true;
+            PositionXY = new int[] { 0, 0 };
             _shape = shape;
         }
         public int[] PositionXY { get; set; }
