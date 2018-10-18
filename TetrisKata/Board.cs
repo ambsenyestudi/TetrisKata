@@ -60,20 +60,42 @@ namespace TetrisKata
             }
             
         }
+        //Test it
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
             if (direction == MoveDirection.Down)
             {
                 //Todo check collision against lines
-                var PosX = piece.PositionXY[0];
-                var PosY = piece.PositionXY[1];
-                var BoundingX = piece.BoundingBox[0];
-                var BoundingY = piece.BoundingBox[1];
+                var posX = piece.PositionXY[0];
+                var posY = piece.PositionXY[1];
+                var boundingX = piece.BoundingBox[0];
+                var boundingY = piece.BoundingBox[1];
 
                 //ground collision
-                if (PosY + BoundingY >= _boardLines.Count)
+                if (posY + boundingY <= _boardLines.Count)
                 {
-                    //Todo bear in mind intervar
+                    
+                    //Todo bear in mind interva
+                    int count = 0;
+                    bool isCollision = false;
+                    while(count < boundingY && !isCollision)
+                    {
+                        var currLineIndex = posY + count;
+                        var currCollisionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingY);
+                        //this line might have a collision block
+                        if (currCollisionLine.Contains(true))
+                        {
+                            var currPieceCollisionLine = piece.CollisionMap.ToList().GetRange(boundingY*count+boundingX, boundingY);
+                            for (int i = 0; i < currCollisionLine.Count; i++)
+                            {
+                                if (currCollisionLine[i] && currCollisionLine[i])
+                                {
+                                    isCollision = true;
+                                }
+                            }
+                        }
+                        count++;
+                    }
                     return false;
                 }
                 else
