@@ -17,6 +17,7 @@ namespace TetrisKata.UT
             _sut = new Board(defaultWidth, defaultHeight);
         }
 
+        //redo this
         [TestMethod]
         public void BoardShouldBeInactiveAtStart()
         {
@@ -42,10 +43,23 @@ namespace TetrisKata.UT
         }
 
         [TestMethod]
-        public void PieceShouldCollide()
+        public void TShapeShouldCollideAgainstLine()
         {
             _sut = new Board(2, 4);
             _sut.AddPieceToBoard(new LinePiece());
+            _sut.Advance(defaultInterval);
+
+            var tPiece = new TShapedPiece();
+            var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void SquareShouldCollideAgainstLine()
+        {
+            _sut = new Board(2, 4);
+            _sut.AddPieceToBoard(new SquarePiece());
+            _sut.Advance(defaultInterval);
+            _sut.Advance(defaultInterval);
             _sut.Advance(defaultInterval);
 
             var tPiece = new TShapedPiece();

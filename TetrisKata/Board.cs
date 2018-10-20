@@ -52,6 +52,7 @@ namespace TetrisKata
                 else
                 {
                     Pieces[Pieces.Count - 1].Stop();
+                    PieceToBoardBlocks(Pieces[Pieces.Count - 1]);
                 }
             }
             if (!isMovePossible)
@@ -60,6 +61,7 @@ namespace TetrisKata
             }
             
         }
+        
         //Test it
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
@@ -81,14 +83,16 @@ namespace TetrisKata
                     while(count < boundingY && !isCollision)
                     {
                         var currLineIndex = posY + count;
-                        var currCollisionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingX);
+                        var currBoardCollsionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingX);
+                        
                         //this line might have a collision block
-                        if (currCollisionLine.Contains(true))
+                        if (currBoardCollsionLine.Contains(true))
                         {
-                            var currPieceCollisionLine = piece.CollisionMap.ToList().GetRange(boundingY*count+boundingX, boundingY);
-                            for (int i = 0; i < currCollisionLine.Count; i++)
+                            IList<IList<bool>> pieceCollisioMapLines = piece.DecomposeCollisionMapInLinesOfBlocks();
+                            var currPieceCollisionLine = pieceCollisioMapLines[count];
+                            for (int x = 0; x < currBoardCollsionLine.Count; x++)
                             {
-                                if (currCollisionLine[i] && currCollisionLine[i])
+                                if (currBoardCollsionLine[x] && currBoardCollsionLine[x])
                                 {
                                     isCollision = true;
                                 }
@@ -96,7 +100,7 @@ namespace TetrisKata
                         }
                         count++;
                     }
-                    return isCollision;
+                    return !isCollision;
                 }
                 else
                 {
@@ -107,8 +111,22 @@ namespace TetrisKata
             }
             return false;
         }
+        private void PieceToBoardBlocks(PieceBase piece)
+        {
+            IList<IList<bool>> result = piece.DecomposeCollisionMapInLinesOfBlocks();
+            for (int linesIndex = 0; linesIndex < result.Count; linesIndex++)
+            {
+                var currLine = result[linesIndex];
+                for (int blockIndex = 0; blockIndex < currLine.Count; blockIndex++)
+                {
+                    var pieceX = piece.PositionXY[0];
+                    var pieceY = piece.PositionXY[1];
+                    _boardLines[pieceY + linesIndex].Positions[pieceX+blockIndex] = currLine[blockIndex];
+                }
+            }
+            string s = "block line is: " + _boardLines.Last().Positions.First();
+        }
 
-        
         public void FreezeBoard()
         {
             if (Pieces.Count > 0)

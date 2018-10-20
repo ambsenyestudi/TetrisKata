@@ -96,5 +96,15 @@ namespace TetrisKata.Pieces
         {
             IsActive = false;
         }
+        public IList<IList<bool>> DecomposeCollisionMapInLinesOfBlocks()
+        {
+            var listOfLines = new List<IList<bool>>();
+            for (int i = 0; i < _height; i++)
+            {
+                var currLine = CollisionMap.ToList().GetRange(_width * i, _width);
+                listOfLines.Add(currLine);
+            }
+            return listOfLines;
+        }
     }
 }
