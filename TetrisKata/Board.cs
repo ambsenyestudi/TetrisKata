@@ -95,17 +95,19 @@ namespace TetrisKata
                     //Todo bear in mind interva
                     int count = 0;
                     bool isCollision = false;
-                    while(count < boundingY && !isCollision)
+                    while (count < boundingY && !isCollision)
                     {
                         var currLineIndex = posY + count;
-                        var currBoardCollisionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingX);
+                        var currBoardCollsionLine = BoardLines[currLineIndex].Positions.GetRange(posX, boundingX);
+
                         //this line might have a collision block
-                        if (currBoardCollisionLine.Contains(true))
+                        if (currBoardCollsionLine.Contains(true))
                         {
-                            var currPieceCollisionLine = piece.CollisionMap.ToList().GetRange((boundingY-1)*count+boundingX, boundingX);
-                            for (int i = 0; i < currBoardCollisionLine.Count; i++)
+                            IList<List<bool>> pieceCollisioMapLines = piece.DecomposeCollisionMapInLinesOfBlocks();
+                            var currPieceCollisionLine = pieceCollisioMapLines[count];
+                            for (int x = 0; x < currBoardCollsionLine.Count; x++)
                             {
-                                if (currBoardCollisionLine[i] && currBoardCollisionLine[i])
+                                if (currBoardCollsionLine[x] && currBoardCollsionLine[x])
                                 {
                                     isCollision = true;
                                 }
@@ -125,7 +127,7 @@ namespace TetrisKata
         }
         private void PieceToBoardBlocks(PieceBase piece)
         {
-            IList<IList<bool>> result = piece.DecomposeCollisionMapInLinesOfBlocks();
+            IList<List<bool>> result = piece.DecomposeCollisionMapInLinesOfBlocks();
             for (int linesIndex = 0; linesIndex < result.Count; linesIndex++)
             {
                 var currLine = result[linesIndex];

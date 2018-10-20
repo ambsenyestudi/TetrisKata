@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TetrisKata.Specification;
 
 namespace TetrisKata.Pieces
 {
     public enum MoveDirection { None, Left, Right, Up, Down }
-    public enum PieceOrientation { None, North, West, South, East }
+    public enum PieceOrientation { None, North, East, South, West }
     public enum PieceShape { None, Line, Square, TShaped, LeftUpLightning, RightUpLightning, LShaped, ReverseLShaped }
     public abstract class PieceBase
     {
@@ -12,12 +13,7 @@ namespace TetrisKata.Pieces
         public bool IsActive { get; private set; }
 
         protected IList<bool> _collisionMap;
-
-        public IList<bool> CollisionMap
-        {
-            get { return _collisionMap; }
-        }
-
+        
         protected PieceShape _shape;
 
         public PieceShape Shape
@@ -28,18 +24,27 @@ namespace TetrisKata.Pieces
         public PieceOrientation _orientation;
         public PieceOrientation Orientation { get => _orientation; }
 
+        private PieceVerticalOrientationSpecification _verticalOrientationSpecification;
         public PieceBase(PieceShape shape)
         {
             IsActive = true;
             PositionXY = new int[] { 0, 0 };
             _orientation = PieceOrientation.North;
+            _verticalOrientationSpecification = new PieceVerticalOrientationSpecification();
             _shape = shape;
         }
         public int[] PositionXY { get; set; }
         public int[] BoundingBox {
             get
             {
-                return new[] { _width, _height };
+                if (_verticalOrientationSpecification.IsSatisfiedBy(this))
+                {
+                    return new[] { _width, _height };
+                }
+                else
+                {
+                    return new[] { _height, _width };
+                }
             }
         }
         public bool IsFourContiguousBlocks
@@ -47,14 +52,14 @@ namespace TetrisKata.Pieces
             get
             {
                 //this is a specification
-                return CollisionMap != null && CollisionMap.Any() && FigureCollisonMapHasFourContiguousBlocks();
+                return _collisionMap != null && _collisionMap.Any() && FigureCollisonMapHasFourContiguousBlocks();
             }
         }
 
         private bool FigureCollisonMapHasFourContiguousBlocks()
         {
             //for now this is no 4 contigous, it's just 4
-            return CollisionMap.Where(p => p == true).Count() == 4;
+            return _collisionMap.Where(p => p == true).Count() == 4;
         }
         protected void InitPiece(int width, int height)
         {
@@ -106,20 +111,54 @@ namespace TetrisKata.Pieces
             else
             {
                 int newOrientation = (int)Orientation + 1;
-                _orientation = (PieceOrientation)Orientation;
+                _orientation = (PieceOrientation)newOrientation;
             }
         }
         public void Stop()
         {
             IsActive = false;
         }
-        public IList<IList<bool>> DecomposeCollisionMapInLinesOfBlocks()
+        public IList<List<bool>> DecomposeCollisionMapInLinesOfBlocks()
         {
-            var listOfLines = new List<IList<bool>>();
+            var listOfLines = new List<List<bool>>();
             for (int i = 0; i < _height; i++)
             {
-                var currLine = CollisionMap.ToList().GetRange(_width * i, _width);
+                var currLine = _collisionMap.ToList().GetRange(_width * i, _width);
                 listOfLines.Add(currLine);
+            }
+            if (Orientation == PieceOrientation.South)
+            {
+                listOfLines.Reverse();
+            }
+            if(!_verticalOrientationSpecification.IsSatisfiedBy(this))
+            {
+                var newListOflines = new List<List<bool>>();
+                for (int y = 0; y < _width; y++)
+                {
+                    var currList = new List<bool>();
+                    for (int x = 0; x < _height; x++)
+                    {
+                        currList.Add(false);
+                    }
+                    newListOflines.Add(currList);
+                }
+                //trasnspose
+                for (int y = 0; y < listOfLines.Count; y++)
+                {
+                    var currList = listOfLines[y];
+                    for (int x = 0; x < currList.Count; x++)
+                    {
+                        newListOflines[x][y] = listOfLines[y][x];
+                    }
+                }
+                if(Orientation == PieceOrientation.East)
+                {
+                    for (int i = 0; i < newListOflines.Count; i++)
+                    {
+                        newListOflines[i].Reverse();
+                    }
+                }
+                listOfLines = newListOflines;
             }
             return listOfLines;
         }

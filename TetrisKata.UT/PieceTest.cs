@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TetrisKata.Pieces;
+using System.Linq;
 
 namespace TetrisKata.UT
 {
@@ -68,6 +69,29 @@ namespace TetrisKata.UT
             line.Stop();
             
             Assert.IsFalse(line.IsActive);
+        }
+        [TestMethod]
+        public void Line_Should_TurnRight()
+        {
+            var line = new LinePiece();
+            var collisionMapList = line.DecomposeCollisionMapInLinesOfBlocks();
+            line.Turn();
+            var turnedCollisionMapList = line.DecomposeCollisionMapInLinesOfBlocks();
+            Assert.AreEqual(collisionMapList.Count,turnedCollisionMapList.First().Count);
+        }
+        [TestMethod]
+        public void L_Should_TurnRight()
+        {
+            var line = new LShapedPiece();
+            var collisionMapList = line.DecomposeCollisionMapInLinesOfBlocks();
+            line.Turn();
+            var turnedCollisionMapList = line.DecomposeCollisionMapInLinesOfBlocks();
+            var first = collisionMapList.First().Last();
+            var firstTurned = turnedCollisionMapList.Last().Last();
+            Assert.AreEqual(first,firstTurned);
+            var second = collisionMapList[1].Last();
+            var secondTurned = turnedCollisionMapList[1][1];
+            Assert.AreEqual(second, secondTurned);
         }
     }
 }
