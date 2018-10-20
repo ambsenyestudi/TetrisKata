@@ -54,7 +54,7 @@ namespace TetrisKata.UT
             Assert.IsFalse(result);
         }
         [TestMethod]
-        public void SquareShouldCollideAgainstLine()
+        public void TShapeShouldCollideAgainstSquare()
         {
             _sut = new Board(2, 4);
             _sut.AddPieceToBoard(new SquarePiece());
