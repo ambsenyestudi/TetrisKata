@@ -8,7 +8,7 @@ namespace TetrisKata
 {
     public class BoardLine
     {
-        public bool IsCleared
+        public bool IsFull
         {
             get
             {

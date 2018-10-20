@@ -52,6 +52,7 @@ namespace TetrisKata
                 else
                 {
                     Pieces[Pieces.Count - 1].Stop();
+                    PieceToBoardBlocks(Pieces[Pieces.Count - 1]);
                 }
             }
             if (!isMovePossible)
@@ -105,8 +106,22 @@ namespace TetrisKata
             }
             return false;
         }
+        private void PieceToBoardBlocks(PieceBase piece)
+        {
+            IList<IList<bool>> result = piece.DecomposeCollisionMapInLinesOfBlocks();
+            for (int linesIndex = 0; linesIndex < result.Count; linesIndex++)
+            {
+                var currLine = result[linesIndex];
+                for (int blockIndex = 0; blockIndex < currLine.Count; blockIndex++)
+                {
+                    var pieceX = piece.PositionXY[0];
+                    var pieceY = piece.PositionXY[1];
+                    _boardLines[pieceY + linesIndex].Positions[pieceX+blockIndex] = currLine[blockIndex];
+                }
+            }
+            string s = "block line is: " + _boardLines.Last().Positions.First();
+        }
 
-        
         public void FreezeBoard()
         {
             if (Pieces.Count > 0)
