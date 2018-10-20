@@ -4,7 +4,7 @@ using System.Linq;
 namespace TetrisKata.Pieces
 {
     public enum MoveDirection { None, Left, Right, Up, Down }
-    public enum PieceOrientation { None, East, South, West, North }
+    public enum PieceOrientation { None, North, West, South, East }
     public enum PieceShape { None, Line, Square, TShaped, LeftUpLightning, RightUpLightning, LShaped, ReverseLShaped }
     public abstract class PieceBase
     {
@@ -25,10 +25,14 @@ namespace TetrisKata.Pieces
             get { return _shape; }
         }
 
+        public PieceOrientation _orientation;
+        public PieceOrientation Orientation { get => _orientation; }
+
         public PieceBase(PieceShape shape)
         {
             IsActive = true;
             PositionXY = new int[] { 0, 0 };
+            _orientation = PieceOrientation.North;
             _shape = shape;
         }
         public int[] PositionXY { get; set; }
@@ -90,6 +94,19 @@ namespace TetrisKata.Pieces
                     break;
                 default:
                     break;
+            }
+        }
+        public void Turn()
+        {
+            //completed loop
+            if(Orientation == PieceOrientation.East)
+            {
+                _orientation = PieceOrientation.North;
+            }
+            else
+            {
+                int newOrientation = (int)Orientation + 1;
+                _orientation = (PieceOrientation)Orientation;
             }
         }
         public void Stop()

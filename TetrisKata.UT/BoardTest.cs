@@ -56,7 +56,7 @@ namespace TetrisKata.UT
         [TestMethod]
         public void TShapeShouldCollideAgainstSquare()
         {
-            _sut = new Board(2, 4);
+            _sut = new Board(3, 4);
             _sut.AddPieceToBoard(new SquarePiece());
             _sut.Advance(defaultInterval);
             _sut.Advance(defaultInterval);
@@ -66,5 +66,17 @@ namespace TetrisKata.UT
             var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
             Assert.IsFalse(result);
         }
+        [TestMethod]
+        public void GivenCompleteLineShouldClear()
+        {
+            _sut = new Board(2, 3);
+            _sut.AddPieceToBoard(new SquarePiece());
+            _sut.Advance(defaultInterval);
+            _sut.Advance(defaultInterval);
+            var result = _sut.IncompleteLinesCount;
+            var expected = 0;
+            Assert.AreEqual(expected, result);
+        }
+
     }
 }

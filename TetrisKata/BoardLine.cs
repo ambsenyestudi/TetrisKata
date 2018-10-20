@@ -12,16 +12,17 @@ namespace TetrisKata
         {
             get
             {
-                return FigureAllPositionsAreFilled();
+                return !Positions.Contains(false);
             }
         }
-
-        private bool FigureAllPositionsAreFilled()
+        public bool HasAny
         {
-            int filledCount = _postions.Where(p => p == true).Count();
-            return _postions.Count == filledCount;
+            get
+            {
+                return Positions.Contains(true) && Positions.Contains(false);
+            }
         }
-
+        
         private List<bool> _postions;
 
         public List<bool> Positions

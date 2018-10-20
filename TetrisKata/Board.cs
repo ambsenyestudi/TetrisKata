@@ -8,6 +8,7 @@ namespace TetrisKata
     public class Board
     {
         public IList<PieceBase> Pieces { get; set; }
+        private int _width;
         public bool IsActive
         {
             get
@@ -21,9 +22,23 @@ namespace TetrisKata
         {
             get { return _boardLines; }
         }
+        public int IncompleteLinesCount
+        {
+            get
+            {
+                return BoardLines.Where(bl => bl.HasAny).Count();
+            }
+        }
+        public int FreeLinesCount
+        {
+            get
+            {
+                return BoardLines.Where(bl => !bl.Positions.Contains(true)).Count();
+            }
+        }
         public Board(int width, int height)
         {
-
+            _width = width;
             Pieces = new List<PieceBase>();
             InitBoardLines(width, height);
         }
@@ -35,6 +50,7 @@ namespace TetrisKata
                 _boardLines.Add(new BoardLine(width));
             }
         }
+        
 
         public void Advance(int interval)
         {
@@ -53,14 +69,15 @@ namespace TetrisKata
                 {
                     Pieces[Pieces.Count - 1].Stop();
                     PieceToBoardBlocks(Pieces[Pieces.Count - 1]);
+                    ClearCompletedLines();
                 }
             }
             if (!isMovePossible)
             {
                 AddRandomPieceToBoard();
             }
-            
         }
+        
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
             if (direction == MoveDirection.Down)
@@ -120,6 +137,36 @@ namespace TetrisKata
                 }
             }
             string s = "block line is: " + _boardLines.Last().Positions.First();
+        }
+        private void ClearCompletedLines()
+        {
+            int count = 0;
+            //max contiguous blocks in a piece
+            int maxBlockIterations = 4;
+            int blockCount = 0;
+
+            while (count < BoardLines.Count)
+            {
+                //specification
+                if (BoardLines[count].IsFull)
+                {
+                    _boardLines.RemoveAt(count);
+                    _boardLines.Add(new BoardLine(_width));
+                    if(blockCount<maxBlockIterations)
+                    {
+                        blockCount++;
+                    }
+                    else
+                    {
+                        count++;
+                    }
+                }
+                else
+                {
+                    count++;
+                }
+            }
+
         }
 
         public void FreezeBoard()
