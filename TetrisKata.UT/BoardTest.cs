@@ -40,17 +40,5 @@ namespace TetrisKata.UT
             var result = _sut.IsMovePossible(piece, MoveDirection.Down, defaultInterval);
             Assert.IsFalse(result);
         }
-
-        [TestMethod]
-        public void PieceShouldCollide()
-        {
-            _sut = new Board(2, 4);
-            _sut.AddPieceToBoard(new LinePiece());
-            _sut.Advance(defaultInterval);
-
-            var tPiece = new TShapedPiece();
-            var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
-            Assert.IsFalse(result);
-        }
     }
 }
