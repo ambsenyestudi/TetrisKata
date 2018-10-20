@@ -60,7 +60,6 @@ namespace TetrisKata
             }
             
         }
-        //Test it
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
             if (direction == MoveDirection.Down)
@@ -71,7 +70,7 @@ namespace TetrisKata
                 var boundingX = piece.BoundingBox[0];
                 var boundingY = piece.BoundingBox[1];
 
-                //ground collision
+                //inside Board
                 if (posY + boundingY <= _boardLines.Count)
                 {
                     
@@ -81,14 +80,14 @@ namespace TetrisKata
                     while(count < boundingY && !isCollision)
                     {
                         var currLineIndex = posY + count;
-                        var currCollisionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingX);
+                        var currBoardCollisionLine = BoardLines[currLineIndex].Positions.GetRange(posX,boundingX);
                         //this line might have a collision block
-                        if (currCollisionLine.Contains(true))
+                        if (currBoardCollisionLine.Contains(true))
                         {
-                            var currPieceCollisionLine = piece.CollisionMap.ToList().GetRange(boundingY*count+boundingX, boundingY);
-                            for (int i = 0; i < currCollisionLine.Count; i++)
+                            var currPieceCollisionLine = piece.CollisionMap.ToList().GetRange((boundingY-1)*count+boundingX, boundingX);
+                            for (int i = 0; i < currBoardCollisionLine.Count; i++)
                             {
-                                if (currCollisionLine[i] && currCollisionLine[i])
+                                if (currBoardCollisionLine[i] && currBoardCollisionLine[i])
                                 {
                                     isCollision = true;
                                 }
@@ -96,14 +95,13 @@ namespace TetrisKata
                         }
                         count++;
                     }
-                    return isCollision;
+                    return !isCollision;
                 }
                 else
                 {
-                    //if blocks in collition map 
+                    //out of the board
                     return false;
                 }
-                
             }
             return false;
         }
