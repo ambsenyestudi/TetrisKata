@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TetrisKata.CrossCutting.Enums;
 using TetrisKata.Pieces;
 
 namespace TetrisKata.UT

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TetrisKata.Pieces.Base;
+using TetrisKata.Pieces.Enums;
 
 namespace TetrisKata.Pieces
 {
@@ -33,7 +35,7 @@ namespace TetrisKata.Pieces
                     }
                 }
             }
-            CollisionMap = collisionMap;
+            _collider.CollisionMap = collisionMap;
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using TetrisKata.CrossCutting.Enums;
 using TetrisKata.Pieces;
+using TetrisKata.Pieces.Base;
 using TetrisKata.Specification;
 
 namespace TetrisKata

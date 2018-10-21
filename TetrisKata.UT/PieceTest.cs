@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TetrisKata.Pieces;
 using System.Linq;
+using TetrisKata.Pieces.Enums;
 
 namespace TetrisKata.UT
 {

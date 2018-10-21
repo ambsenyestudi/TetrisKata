@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TetrisKata.Pieces.Enums;
 using TetrisKata.Specification;
 
-namespace TetrisKata.Pieces
+namespace TetrisKata.Pieces.Components
 {
     public class PieceTransform
     {

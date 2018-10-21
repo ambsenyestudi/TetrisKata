@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using TetrisKata.Pieces;
+using TetrisKata.Pieces.Base;
+using TetrisKata.Pieces.Enums;
 
 namespace TetrisKata.Specification
 {

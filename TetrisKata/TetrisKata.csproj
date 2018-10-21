@@ -42,14 +42,17 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="BoardLine.cs" />
+    <Compile Include="CrossCutting\Enums\MoveDirection.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Pieces\BoundingArea.cs" />
+    <Compile Include="Pieces\Components\BoundingArea.cs" />
+    <Compile Include="Pieces\Enums\PieceOrientation.cs" />
+    <Compile Include="Pieces\Enums\PieceShape.cs" />
     <Compile Include="Pieces\LeftUpLightningPiece.cs" />
     <Compile Include="Pieces\LinePiece.cs" />
     <Compile Include="Pieces\LShapedPiece.cs" />
-    <Compile Include="Pieces\PieceBase.cs" />
-    <Compile Include="Pieces\PieceCollider.cs" />
-    <Compile Include="Pieces\PieceTransform.cs" />
+    <Compile Include="Pieces\Base\PieceBase.cs" />
+    <Compile Include="Pieces\Components\PieceCollider.cs" />
+    <Compile Include="Pieces\Components\PieceTransform.cs" />
     <Compile Include="Pieces\ReverseLShapedPiece.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pieces\RightUpLightningPiece.cs" />

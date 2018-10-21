@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TetrisKata.Specification;
+using TetrisKata.CrossCutting.Enums;
+using TetrisKata.Pieces.Components;
+using TetrisKata.Pieces.Enums;
 
-namespace TetrisKata.Pieces
+namespace TetrisKata.Pieces.Base
 {
-    public enum MoveDirection { None, Left, Right, Up, Down }
-    public enum PieceOrientation { None, North, East, South, West }
-    public enum PieceShape { None, Line, Square, TShaped, LeftUpLightning, RightUpLightning, LShaped, ReverseLShaped }
     public abstract class PieceBase
     {
         public bool IsActive { get; private set; }
@@ -14,15 +13,7 @@ namespace TetrisKata.Pieces
         protected PieceCollider _collider;
         protected PieceTransform _transform;
         public BoundingArea BoundingArea { get => _transform.FigureBoundingArea(_collider); }
-        public IList<bool> CollisionMap {
-            get
-            {
-                //todo
-                return null;
-            }
-            protected set => _collider.CollisionMap = value;
-        }
-
+        
         protected PieceShape _shape;
 
         public PieceShape Shape
@@ -70,7 +61,7 @@ namespace TetrisKata.Pieces
                     collisionMap.Add(true);
                 }
             }
-            CollisionMap = collisionMap;
+            _collider.CollisionMap = collisionMap;
         }
         public void Move(MoveDirection direction, int interval)
         {
