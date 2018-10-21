@@ -58,32 +58,38 @@ namespace TetrisKata
             }
         }
         
-
         public void Advance(int interval)
         {
             bool isMovePossible = false;
-
-            //grounds for specification
+            
             if (IsActive)
             {
                 //move down
-                isMovePossible = IsMovePossible(Pieces.Last(), MoveDirection.Down, interval);
-                if (isMovePossible)
-                {
-                    Pieces[Pieces.Count - 1].Move(MoveDirection.Down, interval);
-                }
-                else
-                {
-                    Pieces[Pieces.Count - 1].Stop();
-                    PieceToBoardBlocks(Pieces[Pieces.Count - 1]);
-                    ClearCompletedLines();
-                }
+                isMovePossible = TryAdvance(interval);
             }
-            if (!isMovePossible)
+            else
             {
                 AddRandomPieceToBoard();
             }
         }
+
+        public bool TryAdvance(int interval)
+        {
+            bool isMovePossible = IsMovePossible(Pieces.Last(), MoveDirection.Down, interval);
+            if (isMovePossible)
+            {
+                Pieces[Pieces.Count - 1].Move(MoveDirection.Down, interval);
+            }
+            else
+            {
+                Pieces[Pieces.Count - 1].Stop();
+                PieceToBoardBlocks(Pieces[Pieces.Count - 1]);
+                ClearCompletedLines();
+            }
+
+            return isMovePossible;
+        }
+
         public bool IsRotationPossible(PieceBase piece)
         {
             piece.Turn();
@@ -101,6 +107,7 @@ namespace TetrisKata
         }
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
+            piece.Move(direction, interval);
             if (_pieceInsideBoardSpecification.IsSatisfiedBy(piece))
             {
                 //Todo bear in mind interva
@@ -163,7 +170,10 @@ namespace TetrisKata
             {
                 for (int x = 0; x < bounding.Width; x++)
                 {
-                    _boardLines[bounding.Y + y].Positions[bounding.X + x] = result[y][x];
+                    if (bounding.Y + y > 0 && bounding.Y + y < _boardLines.Count)
+                    {
+                        _boardLines[bounding.Y + y].Positions[bounding.X + x] = result[y][x];
+                    }
                 }
             }
         }
@@ -195,7 +205,7 @@ namespace TetrisKata
                     count++;
                 }
             }
-
+            string s = "clreared " + _boardLines.Count;
         }
 
         public void FreezeBoard()

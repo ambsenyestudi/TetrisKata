@@ -98,7 +98,7 @@ namespace TetrisKata.Pieces.Components
             //rotates using seccond block as a center
             return new BoundingArea
             {
-                X = PosX-1,
+                X = PosX - 1,
                 Y = PosY-1,
                 Width = transformedWidth,
                 Height = transformedHeight
