@@ -40,7 +40,13 @@ namespace TetrisKata.Pieces.Base
             IsActive = true;
             _shape = shape;
         }
-        
+        public PieceBase(PieceShape shape, PieceTransform transform)
+        {
+            _collider = new PieceCollider();
+            IsActive = true;
+            _shape = shape;
+        }
+
         public bool IsFourContiguousBlocks
         {
             get
@@ -80,8 +86,10 @@ namespace TetrisKata.Pieces.Base
                 case MoveDirection.None:
                     break;
                 case MoveDirection.Left:
+                    _transform.PosX -= interval;
                     break;
                 case MoveDirection.Right:
+                    _transform.PosX += interval;
                     break;
                 case MoveDirection.Up:
                     _transform.PosY -= interval;
@@ -97,6 +105,10 @@ namespace TetrisKata.Pieces.Base
         {
             _transform.Turn();
         }
+        public void TurnBack()
+        {
+            _transform.TurnBack();
+        }
         public void Stop()
         {
             IsActive = false;
@@ -105,5 +117,6 @@ namespace TetrisKata.Pieces.Base
         {
             return _transform.DecomposeCollisionMapInLinesOfBlocks(_collider);
         }
+        
     }
 }

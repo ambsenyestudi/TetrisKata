@@ -57,15 +57,28 @@ namespace TetrisKata
                 _boardLines.Add(new BoardLine(width));
             }
         }
-        
-        public bool TryAdvance(int interval)
+        public bool TryMoveActivePiece(MoveDirection direction, int interval)
         {
-            bool isMovePossible = IsMovePossible(Pieces.Last(), MoveDirection.Down, interval);
+            bool isMovePossible = IsMovePossible(Pieces.Last(), direction, interval);
             if (isMovePossible)
             {
-                Pieces[Pieces.Count - 1].Move(MoveDirection.Down, interval);
+                Pieces[Pieces.Count - 1].Move(direction, interval);
             }
-            else
+            return isMovePossible;
+        }
+        public bool TryTurnActivePiece()
+        {
+            bool isTurnPossible = IsTurnPossible(Pieces[Pieces.Count - 1]);
+            if (!isTurnPossible)
+            {
+                Pieces[Pieces.Count - 1].TurnBack();
+            }
+            return isTurnPossible;
+        }
+        public bool TryAdvanceActivePiece(int interval)
+        {
+            bool isMovePossible = TryMoveActivePiece(MoveDirection.Down, interval);
+            if (!isMovePossible)
             {
                 Pieces[Pieces.Count - 1].Stop();
                 PieceToBoardBlocks(Pieces[Pieces.Count - 1]);
@@ -75,7 +88,7 @@ namespace TetrisKata
             return isMovePossible;
         }
 
-        public bool IsRotationPossible(PieceBase piece)
+        public bool IsTurnPossible(PieceBase piece)
         {
             piece.Turn();
             if (_pieceInsideBoardSpecification.IsSatisfiedBy(piece))
@@ -90,6 +103,8 @@ namespace TetrisKata
                 return false;
             }
         }
+        
+
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
             piece.Move(direction, interval);

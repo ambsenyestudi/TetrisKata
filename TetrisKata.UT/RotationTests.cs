@@ -18,7 +18,7 @@ namespace TetrisKata.UT
         {
             _sut = new Board(4, 3);
             _sut.AddPieceToBoard(new LShapedPiece());
-            var result = _sut.IsRotationPossible(_sut.Pieces.Last());
+            var result = _sut.IsTurnPossible(_sut.Pieces.Last());
             Assert.IsTrue(result);
         }
         [TestMethod]
@@ -26,7 +26,7 @@ namespace TetrisKata.UT
         {
             _sut = new Board(3, 3);
             _sut.AddPieceToBoard(new LShapedPiece());
-            var result = _sut.IsRotationPossible(_sut.Pieces.Last());
+            var result = _sut.IsTurnPossible(_sut.Pieces.Last());
             Assert.IsTrue(result);
         }
     }

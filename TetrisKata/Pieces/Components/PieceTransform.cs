@@ -34,6 +34,18 @@ namespace TetrisKata.Pieces.Components
                 _orientation = (PieceOrientation)newOrientation;
             }
         }
+        public void TurnBack()
+        {
+            if (Orientation == PieceOrientation.North)
+            {
+                _orientation = PieceOrientation.West;
+            }
+            else
+            {
+                int newOrientation = (int)Orientation - 1;
+                _orientation = (PieceOrientation)newOrientation;
+            }
+        }
         public IList<List<bool>> DecomposeCollisionMapInLinesOfBlocks(PieceCollider collider)
         {
             var listOfLines = new List<List<bool>>();

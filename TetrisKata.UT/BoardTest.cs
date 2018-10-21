@@ -48,7 +48,7 @@ namespace TetrisKata.UT
         {
             _sut = new Board(2, 4);
             _sut.AddPieceToBoard(new LinePiece());
-            _sut.TryAdvance(defaultInterval);
+            _sut.TryAdvanceActivePiece(defaultInterval);
 
             var tPiece = new TShapedPiece();
             var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
@@ -59,8 +59,8 @@ namespace TetrisKata.UT
         {
             _sut = new Board(3, 4);
             _sut.AddPieceToBoard(new SquarePiece());
-            _sut.TryAdvance(defaultInterval);
-            _sut.TryAdvance(defaultInterval);
+            _sut.TryAdvanceActivePiece(defaultInterval);
+            _sut.TryAdvanceActivePiece(defaultInterval);
 
             var tPiece = new TShapedPiece();
             var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
@@ -73,9 +73,9 @@ namespace TetrisKata.UT
             _sut = new Board(2, 3);
             _sut.AddPieceToBoard(new SquarePiece());
             var piece = _sut.Pieces.Last();
-            _sut.TryAdvance(defaultInterval);
-            _sut.TryAdvance(defaultInterval);
-            _sut.TryAdvance(defaultInterval);
+            _sut.TryAdvanceActivePiece(defaultInterval);
+            _sut.TryAdvanceActivePiece(defaultInterval);
+            _sut.TryAdvanceActivePiece(defaultInterval);
             var result = _sut.IncompleteLinesCount;
             var expected = 0;
             Assert.AreEqual(expected, result);

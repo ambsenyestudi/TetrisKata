@@ -47,6 +47,7 @@
     <Compile Include="Pieces\Components\BoundingArea.cs" />
     <Compile Include="Pieces\Enums\PieceOrientation.cs" />
     <Compile Include="Pieces\Enums\PieceShape.cs" />
+    <Compile Include="Pieces\Factory\PieceFactory.cs" />
     <Compile Include="Pieces\LeftUpLightningPiece.cs" />
     <Compile Include="Pieces\LinePiece.cs" />
     <Compile Include="Pieces\LShapedPiece.cs" />

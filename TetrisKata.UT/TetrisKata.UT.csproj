@@ -53,6 +53,7 @@
     <Compile Include="GameTest.cs" />
     <Compile Include="BoardTest.cs" />
     <Compile Include="RotationTests.cs" />
+    <Compile Include="MoveTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

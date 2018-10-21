@@ -20,7 +20,7 @@ namespace TetrisKata
 
         public void Advance()
         {
-            var isAdvance = Board.TryAdvance(_interval);
+            var isAdvance = Board.TryAdvanceActivePiece(_interval);
             if (!isAdvance)
             {
                 Board.AddRandomPieceToBoard();
