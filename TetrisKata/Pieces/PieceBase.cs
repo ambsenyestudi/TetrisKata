@@ -104,7 +104,7 @@ namespace TetrisKata.Pieces
         public void Turn()
         {
             //completed loop
-            if(Orientation == PieceOrientation.East)
+            if(Orientation == PieceOrientation.West)
             {
                 _orientation = PieceOrientation.North;
             }
@@ -129,6 +129,10 @@ namespace TetrisKata.Pieces
             if (Orientation == PieceOrientation.South)
             {
                 listOfLines.Reverse();
+                for (int i = 0; i < listOfLines.Count; i++)
+                {
+                    listOfLines[i].Reverse();
+                }
             }
             if(!_verticalOrientationSpecification.IsSatisfiedBy(this))
             {
@@ -157,6 +161,10 @@ namespace TetrisKata.Pieces
                     {
                         newListOflines[i].Reverse();
                     }
+                }
+                else
+                {
+                    newListOflines.Reverse();
                 }
                 listOfLines = newListOflines;
             }
