@@ -47,12 +47,15 @@
     <Compile Include="Pieces\LinePiece.cs" />
     <Compile Include="Pieces\LShapedPiece.cs" />
     <Compile Include="Pieces\PieceBase.cs" />
+    <Compile Include="Pieces\PieceCollider.cs" />
+    <Compile Include="Pieces\PieceTransform.cs" />
     <Compile Include="Pieces\ReverseLShapedPiece.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pieces\RightUpLightningPiece.cs" />
     <Compile Include="Pieces\SquarePiece.cs" />
     <Compile Include="Pieces\TShapedPiece.cs" />
-    <Compile Include="Specification\PieceVerticalOrientationSpecification.cs" />
+    <Compile Include="Specification\PieceInsideBoardSpecification.cs" />
+    <Compile Include="Specification\VerticalOrientationSpecification.cs" />
     <Compile Include="Specification\SpecificationBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
