@@ -38,6 +38,7 @@ namespace TetrisKata.UT
         public void LeftUpLightning_Should_Be_Four_Contiguous_Blocks()
         {
             var leftUpLightning = new LeftUpLightningPiece();
+            
             Assert.IsTrue(leftUpLightning.IsFourContiguousBlocks);
         }
 

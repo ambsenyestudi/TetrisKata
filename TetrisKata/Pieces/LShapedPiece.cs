@@ -8,7 +8,7 @@ namespace TetrisKata.Pieces
         {
             InitPiece(2, 3);
         }
-        public override List<bool> InitCollisionMap(int width, int height)
+        public override void InitCollisionMap(int width, int height)
         {
             var collisionMap = new List<bool>();
             for (int y = 0; y < height; y++)
@@ -29,7 +29,7 @@ namespace TetrisKata.Pieces
                     }
                 }
             }
-            return collisionMap;
+            CollisionMap = collisionMap;
         }
     }
 }

@@ -43,6 +43,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="BoardLine.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Pieces\BoundingArea.cs" />
     <Compile Include="Pieces\LeftUpLightningPiece.cs" />
     <Compile Include="Pieces\LinePiece.cs" />
     <Compile Include="Pieces\LShapedPiece.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Pieces\RightUpLightningPiece.cs" />
     <Compile Include="Pieces\SquarePiece.cs" />
     <Compile Include="Pieces\TShapedPiece.cs" />
+    <Compile Include="Specification\ContainsCollidingBlockSpecification.cs" />
     <Compile Include="Specification\PieceInsideBoardSpecification.cs" />
     <Compile Include="Specification\VerticalOrientationSpecification.cs" />
     <Compile Include="Specification\SpecificationBase.cs" />

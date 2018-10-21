@@ -13,7 +13,7 @@ namespace TetrisKata.Pieces
         public int PosY { get; set; }
         protected PieceOrientation _orientation;
         public PieceOrientation Orientation { get => _orientation; }
-
+        
         private VerticalOrientationSpecification _verticalOrientationSpecification;
 
         public PieceTransform()
@@ -87,6 +87,24 @@ namespace TetrisKata.Pieces
                 listOfLines = newListOflines;
             }
             return listOfLines;
+        }
+        public BoundingArea FigureBoundingArea(PieceCollider collider)
+        {
+            var transformedWidth = collider.Height;
+            var transformedHeight = collider.Width;
+            if (_verticalOrientationSpecification.IsSatisfiedBy(Orientation))
+            {
+                transformedWidth = collider.Width;
+                transformedHeight = collider.Height;
+            }
+            //now figured from top left
+            return new BoundingArea
+            {
+                X = PosY,
+                Y = PosY,
+                Width = transformedWidth,
+                Height = transformedHeight
+            };
         }
     }
 }

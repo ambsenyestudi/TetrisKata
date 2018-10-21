@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace TetrisKata.Pieces
 {
-    public class PieceCollider
+    public class BoundingArea
     {
+        public int X { get; set; }
+        public int Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-
-        public IList<bool> CollisionMap { get; set; }
-        public int[] BoundingBox
-        {
-            get => new[] { Width, Height };
-        }
     }
 }

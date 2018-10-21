@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TetrisKata.Pieces;
+using TetrisKata.Specification;
 
 namespace TetrisKata
 {
@@ -9,6 +10,8 @@ namespace TetrisKata
     {
         public IList<PieceBase> Pieces { get; set; }
         private int _width;
+        private PieceInsideBoardSpecification _pieceInsideBoardSpecification;
+        private ContainsCollidingBlockSpecification _containsCollidingBlocksSpecification;
         public bool IsActive
         {
             get
@@ -41,6 +44,8 @@ namespace TetrisKata
             _width = width;
             Pieces = new List<PieceBase>();
             InitBoardLines(width, height);
+            _pieceInsideBoardSpecification = new PieceInsideBoardSpecification(width, height);
+            _containsCollidingBlocksSpecification = new ContainsCollidingBlockSpecification();
         }
         private void InitBoardLines(int width, int height)
         {
@@ -82,38 +87,15 @@ namespace TetrisKata
         {
             if (direction == MoveDirection.Down)
             {
-                //Todo check collision against lines
-                var posX = piece.PositionXY[0];
-                var posY = piece.PositionXY[1] + interval;
-                var boundingX = piece.BoundingBox[0];
-                var boundingY = piece.BoundingBox[1];
-
                 //inside Board
-                if (posY + boundingY <= _boardLines.Count)
+                if(_pieceInsideBoardSpecification.IsSatisfiedBy(piece))
                 {
-                    
                     //Todo bear in mind interva
-                    int count = 0;
                     bool isCollision = false;
-                    while (count < boundingY && !isCollision)
+                    var currBoardPieceCollision = SnipPieceAreaFromBoardLines(piece);
+                    if (_containsCollidingBlocksSpecification.IsSatisfiedBy(currBoardPieceCollision))
                     {
-                        var currLineIndex = posY + count;
-                        var currBoardCollsionLine = BoardLines[currLineIndex].Positions.GetRange(posX, boundingX);
-
-                        //this line might have a collision block
-                        if (currBoardCollsionLine.Contains(true))
-                        {
-                            IList<List<bool>> pieceCollisioMapLines = piece.DecomposeCollisionMapInLinesOfBlocks();
-                            var currPieceCollisionLine = pieceCollisioMapLines[count];
-                            for (int x = 0; x < currBoardCollsionLine.Count; x++)
-                            {
-                                if (currBoardCollsionLine[x] && currBoardCollsionLine[x])
-                                {
-                                    isCollision = true;
-                                }
-                            }
-                        }
-                        count++;
+                        isCollision = currBoardPieceCollision.SequenceEqual(piece.DecomposeCollisionMapInLinesOfBlocks());
                     }
                     return !isCollision;
                 }
@@ -125,17 +107,28 @@ namespace TetrisKata
             }
             return false;
         }
+
+        private IList<List<bool>> SnipPieceAreaFromBoardLines(PieceBase piece)
+        {
+            var bounding = piece.BoundingArea;
+            var result = new List<List<bool>>();
+            for (int y = 0; y < bounding.Height; y++)
+            {
+                var currBoardLine = BoardLines[bounding.Y + y];
+                result.Add(currBoardLine.Positions.GetRange(bounding.X, bounding.Width));
+            }
+            return result;
+        }
+
         private void PieceToBoardBlocks(PieceBase piece)
         {
+            var bounding = piece.BoundingArea;
             IList<List<bool>> result = piece.DecomposeCollisionMapInLinesOfBlocks();
-            for (int linesIndex = 0; linesIndex < result.Count; linesIndex++)
+            for (int y = 0; y < bounding.Height; y++)
             {
-                var currLine = result[linesIndex];
-                for (int blockIndex = 0; blockIndex < currLine.Count; blockIndex++)
+                for (int x = 0; x < bounding.Width; x++)
                 {
-                    var pieceX = piece.PositionXY[0];
-                    var pieceY = piece.PositionXY[1];
-                    _boardLines[pieceY + linesIndex].Positions[pieceX+blockIndex] = currLine[blockIndex];
+                    _boardLines[bounding.Y + y].Positions[bounding.X + x] = result[y][x];
                 }
             }
             string s = "block line is: " + _boardLines.Last().Positions.First();

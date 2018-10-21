@@ -13,7 +13,16 @@ namespace TetrisKata.Pieces
 
         protected PieceCollider _collider;
         protected PieceTransform _transform;
-        
+        public BoundingArea BoundingArea { get => _transform.FigureBoundingArea(_collider); }
+        public IList<bool> CollisionMap {
+            get
+            {
+                //todo
+                return null;
+            }
+            protected set => _collider.CollisionMap = value;
+        }
+
         protected PieceShape _shape;
 
         public PieceShape Shape
@@ -49,9 +58,19 @@ namespace TetrisKata.Pieces
         {
             _collider.Width = width;
             _collider.Height= height;
-            _collider.InitCollisionMap();
         }
-        
+        public virtual void InitCollisionMap(int width, int height)
+        {
+            var collisionMap = new List<bool>();
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    collisionMap.Add(true);
+                }
+            }
+            CollisionMap = collisionMap;
+        }
         public void Move(MoveDirection direction, int interval)
         {
             switch (direction)
