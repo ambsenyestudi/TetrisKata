@@ -101,15 +101,11 @@ namespace TetrisKata
         }
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
-            if (direction == MoveDirection.Down)
+            if (_pieceInsideBoardSpecification.IsSatisfiedBy(piece))
             {
-                if(_pieceInsideBoardSpecification.IsSatisfiedBy(piece))
-                {
-                    //Todo bear in mind interva
-                    bool isCollision = FigureCollision(piece);
-                    return !isCollision;
-                }
-                return false;
+                //Todo bear in mind interva
+                bool isCollision = FigureCollision(piece);
+                return !isCollision;
             }
             return false;
         }
