@@ -58,21 +58,6 @@ namespace TetrisKata
             }
         }
         
-        public void Advance(int interval)
-        {
-            bool isMovePossible = false;
-            
-            if (IsActive)
-            {
-                //move down
-                isMovePossible = TryAdvance(interval);
-            }
-            else
-            {
-                AddRandomPieceToBoard();
-            }
-        }
-
         public bool TryAdvance(int interval)
         {
             bool isMovePossible = IsMovePossible(Pieces.Last(), MoveDirection.Down, interval);

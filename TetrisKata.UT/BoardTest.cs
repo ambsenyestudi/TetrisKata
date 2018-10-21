@@ -48,7 +48,7 @@ namespace TetrisKata.UT
         {
             _sut = new Board(2, 4);
             _sut.AddPieceToBoard(new LinePiece());
-            _sut.Advance(defaultInterval);
+            _sut.TryAdvance(defaultInterval);
 
             var tPiece = new TShapedPiece();
             var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
@@ -59,8 +59,8 @@ namespace TetrisKata.UT
         {
             _sut = new Board(3, 4);
             _sut.AddPieceToBoard(new SquarePiece());
-            _sut.Advance(defaultInterval);
-            _sut.Advance(defaultInterval);
+            _sut.TryAdvance(defaultInterval);
+            _sut.TryAdvance(defaultInterval);
 
             var tPiece = new TShapedPiece();
             var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
