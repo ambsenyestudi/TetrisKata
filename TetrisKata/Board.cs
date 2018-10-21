@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TetrisKata.CrossCutting.Enums;
 using TetrisKata.Pieces;
@@ -83,38 +84,53 @@ namespace TetrisKata
                 AddRandomPieceToBoard();
             }
         }
-        
+        public bool IsRotationPossible(PieceBase piece)
+        {
+            piece.Turn();
+            if (_pieceInsideBoardSpecification.IsSatisfiedBy(piece))
+            {
+                //Todo bear in mind interva
+                bool isCollision = FigureCollision(piece);
+                return !isCollision;
+            }
+            else
+            {
+                //out of the board
+                return false;
+            }
+        }
         public bool IsMovePossible(PieceBase piece, MoveDirection direction, int interval)
         {
             if (direction == MoveDirection.Down)
             {
-                //inside Board
                 if(_pieceInsideBoardSpecification.IsSatisfiedBy(piece))
                 {
                     //Todo bear in mind interva
-                    bool isCollision = false;
-                    var currBoardPieceCollision = SnipPieceAreaFromBoardLines(piece);
-                    if (_containsCollidingBlocksSpecification.IsSatisfiedBy(currBoardPieceCollision))
-                    {
-                        isCollision = FigureCollision(piece, currBoardPieceCollision);
-                    }
+                    bool isCollision = FigureCollision(piece);
                     return !isCollision;
                 }
-                else
-                {
-                    //out of the board
-                    return false;
-                }
+                return false;
             }
             return false;
         }
 
-        private bool FigureCollision(PieceBase piece, IList<List<bool>> currBoardPieceCollision)
+        private bool FigureCollision(PieceBase piece)
+        {
+            bool isCollision = false;
+            var currBoardPieceCollision = SnipPieceAreaFromBoardLines(piece);
+            if (_containsCollidingBlocksSpecification.IsSatisfiedBy(currBoardPieceCollision))
+            {
+                isCollision = FigurePieceBlockCollsion(piece, currBoardPieceCollision);
+            }
+            return isCollision;
+        }
+
+        private static bool FigurePieceBlockCollsion(PieceBase piece, IList<List<bool>> currBoardPieceCollision)
         {
             var pieceBlockLines = piece.DecomposeCollisionMapInLinesOfBlocks();
-            int countY = 0;
             bool isCollision = false;
-            while(countY<pieceBlockLines.Count && !isCollision)
+            int countY = 0;
+            while (countY < pieceBlockLines.Count && !isCollision)
             {
                 int max = pieceBlockLines[countY].Count;
                 int countX = 0;
@@ -125,9 +141,9 @@ namespace TetrisKata
                     isCollision = (pieceResult && boarLineResult);
                     countX++;
                 }
-                
                 countY++;
             }
+
             return isCollision;
         }
 
@@ -154,7 +170,6 @@ namespace TetrisKata
                     _boardLines[bounding.Y + y].Positions[bounding.X + x] = result[y][x];
                 }
             }
-            string s = "block line is: " + _boardLines.Last().Positions.First();
         }
         private void ClearCompletedLines()
         {
@@ -196,7 +211,17 @@ namespace TetrisKata
         }
         public void AddPieceToBoard(PieceBase piece)
         {
-            Pieces.Add(piece);
+            
+            Pieces.Add(PlacePieceAtTopCenterOfBoard(piece));
+            
+        }
+
+        private PieceBase PlacePieceAtTopCenterOfBoard(PieceBase piece)
+        {
+            piece.PosX = this._width / 2;
+            //default rotation offset
+            piece.PosY = 1;
+            return piece;
         }
 
         public void AddRandomPieceToBoard()

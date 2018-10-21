@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using TetrisKata.CrossCutting.Enums;
 using TetrisKata.Pieces;
 
@@ -66,11 +67,13 @@ namespace TetrisKata.UT
             var result = _sut.IsMovePossible(tPiece, MoveDirection.Down, defaultInterval);
             Assert.IsFalse(result);
         }
+        
         [TestMethod]
         public void GivenCompleteLineShouldClear()
         {
             _sut = new Board(2, 3);
             _sut.AddPieceToBoard(new SquarePiece());
+            var piece = _sut.Pieces.Last();
             _sut.Advance(defaultInterval);
             _sut.Advance(defaultInterval);
             var result = _sut.IncompleteLinesCount;

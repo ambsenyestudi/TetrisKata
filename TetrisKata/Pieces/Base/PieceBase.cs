@@ -13,7 +13,17 @@ namespace TetrisKata.Pieces.Base
         protected PieceCollider _collider;
         protected PieceTransform _transform;
         public BoundingArea BoundingArea { get => _transform.FigureBoundingArea(_collider); }
-        
+        public int PosX
+        {
+            get => _transform.PosX;
+            set => _transform.PosX = value;
+        }
+        public int PosY
+        {
+            get => _transform.PosY;
+            set => _transform.PosY = value;
+        }
+
         protected PieceShape _shape;
 
         public PieceShape Shape

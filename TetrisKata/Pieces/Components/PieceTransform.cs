@@ -95,11 +95,11 @@ namespace TetrisKata.Pieces.Components
                 transformedWidth = collider.Width;
                 transformedHeight = collider.Height;
             }
-            //now figured from top left
+            //rotates using seccond block as a center
             return new BoundingArea
             {
-                X = PosX,
-                Y = PosY,
+                X = PosX-1,
+                Y = PosY-1,
                 Width = transformedWidth,
                 Height = transformedHeight
             };
