@@ -95,7 +95,7 @@ namespace TetrisKata
                     var currBoardPieceCollision = SnipPieceAreaFromBoardLines(piece);
                     if (_containsCollidingBlocksSpecification.IsSatisfiedBy(currBoardPieceCollision))
                     {
-                        isCollision = currBoardPieceCollision.SequenceEqual(piece.DecomposeCollisionMapInLinesOfBlocks());
+                        isCollision = FigureCollision(piece, currBoardPieceCollision);
                     }
                     return !isCollision;
                 }
@@ -106,6 +106,28 @@ namespace TetrisKata
                 }
             }
             return false;
+        }
+
+        private bool FigureCollision(PieceBase piece, IList<List<bool>> currBoardPieceCollision)
+        {
+            var pieceBlockLines = piece.DecomposeCollisionMapInLinesOfBlocks();
+            int countY = 0;
+            bool isCollision = false;
+            while(countY<pieceBlockLines.Count && !isCollision)
+            {
+                int max = pieceBlockLines[countY].Count;
+                int countX = 0;
+                while (countX < max && !isCollision)
+                {
+                    var pieceResult = pieceBlockLines[countY][countX];
+                    var boarLineResult = currBoardPieceCollision[countY][countX];
+                    isCollision = (pieceResult && boarLineResult);
+                    countX++;
+                }
+                
+                countY++;
+            }
+            return isCollision;
         }
 
         private IList<List<bool>> SnipPieceAreaFromBoardLines(PieceBase piece)

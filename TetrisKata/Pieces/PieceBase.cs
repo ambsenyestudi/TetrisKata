@@ -58,6 +58,7 @@ namespace TetrisKata.Pieces
         {
             _collider.Width = width;
             _collider.Height= height;
+            InitCollisionMap(width, height);
         }
         public virtual void InitCollisionMap(int width, int height)
         {
@@ -82,6 +83,7 @@ namespace TetrisKata.Pieces
                 case MoveDirection.Right:
                     break;
                 case MoveDirection.Up:
+                    _transform.PosY -= interval;
                     break;
                 case MoveDirection.Down:
                     _transform.PosY += interval;

@@ -100,7 +100,7 @@ namespace TetrisKata.Pieces
             //now figured from top left
             return new BoundingArea
             {
-                X = PosY,
+                X = PosX,
                 Y = PosY,
                 Width = transformedWidth,
                 Height = transformedHeight

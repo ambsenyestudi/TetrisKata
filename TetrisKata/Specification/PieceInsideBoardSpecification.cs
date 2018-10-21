@@ -20,7 +20,7 @@ namespace TetrisKata.Specification
         public override Expression<Func<PieceBase, bool>> ToExpression()
         {
             return piece => piece.BoundingArea.X >=0 
-            && piece.BoundingArea.X+piece.BoundingArea.Width < _boardWidth 
+            && piece.BoundingArea.X + piece.BoundingArea.Width <= _boardWidth 
             && piece.BoundingArea.Y + piece.BoundingArea.Height < _boardHeight;
         }
     }
